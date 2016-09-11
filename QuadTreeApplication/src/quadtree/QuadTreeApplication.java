@@ -1,5 +1,6 @@
 package quadtree;
 
+import Utilities.ActionLogger;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 
@@ -8,10 +9,9 @@ public class QuadTreeApplication
     public static ActionLogger logger = new ActionLogger();
     public static void main(String[] args)
     {
+        FileManager fileManager = new FileManager();
         UserInput inputs = CreateUserInput(args);
-        
-        final String outFilePath = "C:\\Users\\tkidder\\Desktop\\XYCoordinatesOutput.txt";
-        ArrayList<DataPoint> fileContents = GetFileCoordinates();
+        ArrayList<DataPoint> fileContents = fileManager.ReadFile();
         
         //Brute Force
         //ArrayList<DataPoint> coordinatesInRange = GetCoordinatesInRange(fileContents, inputs);
@@ -20,7 +20,7 @@ public class QuadTreeApplication
         QuadTree QuadTreeStructure = CreateQuadTreeStructure(fileContents);
         ArrayList<DataPoint> coordinatesInRange = QueryDataPointsInRange(QuadTreeStructure, inputs);
         
-        PrintCoordinatesToFile(coordinatesInRange, outFilePath);
+        fileManager.PrintToFile(coordinatesInRange);
         //logger.WriteToFile();
     }
     
@@ -160,15 +160,5 @@ public class QuadTreeApplication
         });
         long endTime = System.nanoTime();
         System.out.println("Print Contents Took " + ((endTime - startTime)/ 1000000000.0) + " seconds");
-    }
-    
-    private static ArrayList<DataPoint> GetFileCoordinates()
-    {
-        return CoordinatesFileReader.ReadFile();
-    }
-    
-    private static void PrintCoordinatesToFile(ArrayList<DataPoint> coordinates, String filePath)
-    {
-        CoordinatesFilePrinter.PrintToFile(coordinates, filePath);
     }
 }

@@ -1,23 +1,35 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
 package quadtree;
 
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 
-public class CoordinatesFileReader
+/**
+ *
+ * @author tkidder
+ */
+public class FileManager
 {
-    public static ArrayList<DataPoint> ReadFile()
+    
+    private enum fileOperation {OPEN, SAVE};
+    public ArrayList<DataPoint> ReadFile()
     {
-        String filePath = GetFilePath(); 
+        String filePath = GetFilePath(fileOperation.OPEN); 
         return ReadFile(filePath);
     }
     
-    public static ArrayList<DataPoint> ReadFile(String filePath)
+    private ArrayList<DataPoint> ReadFile(String filePath)
     {        
         long startTime = System.nanoTime();
         
@@ -51,12 +63,28 @@ public class CoordinatesFileReader
         return coordinates;
     }
     
-    /**
-    * Does some thing in old style.
-    *
-    * @deprecated as we no longer count file lines  
-    */
-    private static int LinesInFile(String filePath)
+    public void PrintToFile(ArrayList<DataPoint> coordinates)
+    {
+        long startTime = System.nanoTime();
+        System.out.println(GetFilePath(fileOperation.SAVE) + "\\XYCoordinates.txt");
+        try(PrintWriter pr = new PrintWriter(GetFilePath(fileOperation.SAVE) + "\\XYCoordinates.txt"))
+        {
+            coordinates.stream().forEach((coordinate) ->
+            {
+                pr.println(coordinate.getxCoord() + "," + coordinate.getyCoord() + "," + coordinate.getValue());
+            });
+            pr.close();
+        }
+        catch (Exception e)
+        {
+            System.out.println("No such file exists.");
+        }
+        
+        long endTime = System.nanoTime();
+        System.out.println("Print To File Took " + ((endTime - startTime)/ 1000000000.0) + " seconds");
+    }
+    
+    private int LinesInFile(String filePath)
     {
         long startTime = System.nanoTime();
         int linesInFile = 0;
@@ -78,12 +106,16 @@ public class CoordinatesFileReader
         return linesInFile;
     }
     
-    private static String GetFilePath()
+    private String GetFilePath(fileOperation operation)
     {
         JFrame f = new JFrame("File Reader");
         JFileChooser fileChooser = new JFileChooser();
         fileChooser.setCurrentDirectory(new File(System.getProperty("user.home")));
-        int result = fileChooser.showOpenDialog(f);
+        
+        if(operation == fileOperation.SAVE)
+            fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+        
+        int result = operation == fileOperation.OPEN ? fileChooser.showOpenDialog(f) : fileChooser.showSaveDialog(f);
         if (result == JFileChooser.APPROVE_OPTION)
         {
             File selectedFile = fileChooser.getSelectedFile();
