@@ -13,8 +13,8 @@ import java.math.BigDecimal;
  */
 public class AxisAlignedBoundingBox
 {
-    DataPoint center;
-    BigDecimal halfDimension;
+    private final DataPoint center;
+    private final BigDecimal halfDimension;
     
     public AxisAlignedBoundingBox(DataPoint _center, BigDecimal _halfDimension)
     {
@@ -47,19 +47,20 @@ public class AxisAlignedBoundingBox
         double yMinOther = other.center.getyCoord() - other.halfDimension.doubleValue();
         double yMaxOther = other.center.getyCoord() + other.halfDimension.doubleValue();
         
-        
-        //if (xMax < xMinOther) return false; // a is left of b
         if(xMax < xMinOther) return false;
-        
-        //if (xMin > xMaxOther) return false; // a is right of b
         if(xMin > xMaxOther) return false;
-        
-        //if (yMax < yMinOther) return false; // a is above b
         if(yMax < yMinOther) return false;
-        
-        //if (yMin > yMaxOther) return false; // a is below b
         if(yMin > yMaxOther) return false;
-        
-        return true; // boxes overlap
+        return true;
+    }
+    
+    public BigDecimal getHalfDimension()
+    {
+        return this.halfDimension;
+    }
+    
+    public DataPoint getCenter()
+    {
+        return this.center;
     }
 }

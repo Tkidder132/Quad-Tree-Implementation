@@ -24,19 +24,18 @@ public class FileManager
 {
     private int timesSaved = 0;
     private enum fileOperation {OPEN, SAVE};
-    public ArrayList<DataPoint> ReadFile()
+    public ArrayList<DataPoint> readFile()
     {
         String filePath;
         do
         {
             JOptionPane.showMessageDialog(null, "Please choose an input file");
-            filePath = GetFilePath(fileOperation.OPEN);
-            System.out.println(filePath);
+            filePath = getFilePath(fileOperation.OPEN);
         }while(filePath.equals(""));
-        return ReadFile(filePath);
+        return readFile(filePath);
     }
     
-    private ArrayList<DataPoint> ReadFile(String filePath)
+    private ArrayList<DataPoint> readFile(String filePath)
     {
         ArrayList<DataPoint> coordinates = new ArrayList<>();
         
@@ -53,9 +52,6 @@ public class FileManager
                 double Value = Double.parseDouble(line.split(",")[2]);
                 coordinates.add(new DataPoint(xCoord, yCoord, Value));
                 line = br.readLine();
-                
-                if(counter % 100000 == 0)
-                    System.out.println("Read: " + counter + " lines");
             }
             br.close();
         }
@@ -66,10 +62,10 @@ public class FileManager
         return coordinates;
     }
     
-    public void PrintToFile(ArrayList<DataPoint> coordinates)
+    public void printToFile(ArrayList<DataPoint> coordinates)
     {
         JOptionPane.showMessageDialog(null, "Please choose a location to save");
-        try(PrintWriter pr = new PrintWriter(GetFilePath(fileOperation.SAVE) + 
+        try(PrintWriter pr = new PrintWriter(getFilePath(fileOperation.SAVE) + 
                                             "\\query_results" + 
                                             ((timesSaved == 0) ? "" : timesSaved).toString() + 
                                             ".txt"))
@@ -87,7 +83,7 @@ public class FileManager
         }
     }
     
-    private int LinesInFile(String filePath)
+    private int linesInFile(String filePath)
     {
         int linesInFile = 0;
         try(BufferedReader br = new BufferedReader(new FileReader(filePath))) 
@@ -106,7 +102,7 @@ public class FileManager
         return linesInFile;
     }
     
-    private String GetFilePath(fileOperation operation)
+    private String getFilePath(fileOperation operation)
     {
         JFrame f = new JFrame("File Reader");
         JFileChooser fileChooser = new JFileChooser();
