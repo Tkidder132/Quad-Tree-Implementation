@@ -27,6 +27,12 @@ public class QuadTree
     QuadTree southWest;
     QuadTree southEast;
     
+    public QuadTree(ArrayList<DataPoint> dataPoints)
+    {
+        boundary = CreateStartBoxFromFileContents(dataPoints);
+        CreateQuadTreeStructure(dataPoints);
+    }
+    
     public QuadTree(AxisAlignedBoundingBox _boundary)
     {
         this.boundary = _boundary;
@@ -68,56 +74,7 @@ public class QuadTree
         southWest = CreateSouthWestSubdividedQuadTree();
         southEast = CreateSouthEastSubdividedQuadTree();
     }
-    
-    private void LogSubdividedValues(QuadTree northWest, QuadTree northEast, QuadTree southWest, QuadTree southEast)
-    {
-        QuadTreeApplication.logger.AddLog("\n\n");
-        QuadTreeApplication.logger.AddLog("/*****************New Subdivided Trees****************/");
         
-        QuadTreeApplication.logger.AddLog("\n\n");
-        QuadTreeApplication.logger.AddLog("North West Information");
-        QuadTreeApplication.logger.AddLog("North West Center: (" + northWest.boundary.center.getxCoord() + ", " + northWest.boundary.center.getyCoord() + ")");
-        QuadTreeApplication.logger.AddLog("North West Half Dimension: " + northWest.boundary.halfDimension);
-        QuadTreeApplication.logger.AddLog("North West MinX: " + northWest.boundary.center.getxCoord().subtract(northWest.boundary.halfDimension) );
-        QuadTreeApplication.logger.AddLog("North West MaxX: " + northWest.boundary.center.getxCoord().add(northWest.boundary.halfDimension) );
-        QuadTreeApplication.logger.AddLog("North West MinY: " + northWest.boundary.center.getyCoord().subtract(northWest.boundary.halfDimension) );
-        QuadTreeApplication.logger.AddLog("North West MaxY: " + northWest.boundary.center.getyCoord().add(northWest.boundary.halfDimension) );
-        QuadTreeApplication.logger.AddLog("\n\n");
-        
-        QuadTreeApplication.logger.AddLog("\n\n");
-        QuadTreeApplication.logger.AddLog("North East Information");
-        QuadTreeApplication.logger.AddLog("North East Center: (" + northEast.boundary.center.getxCoord() + ", " + northEast.boundary.center.getyCoord() + ")");
-        QuadTreeApplication.logger.AddLog("North East Half Dimension: " + northEast.boundary.halfDimension);
-        QuadTreeApplication.logger.AddLog("North East MinX: " + northEast.boundary.center.getxCoord().subtract(northEast.boundary.halfDimension) );
-        QuadTreeApplication.logger.AddLog("North East MaxX: " + northEast.boundary.center.getxCoord().add(northEast.boundary.halfDimension) );
-        QuadTreeApplication.logger.AddLog("North East MinY: " + northEast.boundary.center.getyCoord().subtract(northEast.boundary.halfDimension) );
-        QuadTreeApplication.logger.AddLog("North East MaxY: " + northEast.boundary.center.getyCoord().add(northEast.boundary.halfDimension) );
-        QuadTreeApplication.logger.AddLog("\n\n");
-        
-        QuadTreeApplication.logger.AddLog("\n\n");
-        QuadTreeApplication.logger.AddLog("South West Information");
-        QuadTreeApplication.logger.AddLog("South West Center: (" + southWest.boundary.center.getxCoord() + ", " + southWest.boundary.center.getyCoord() + ")");
-        QuadTreeApplication.logger.AddLog("South West Half Dimension: " + southWest.boundary.halfDimension);
-        QuadTreeApplication.logger.AddLog("South West MinX: " + southWest.boundary.center.getxCoord().subtract(southWest.boundary.halfDimension) );
-        QuadTreeApplication.logger.AddLog("South West MaxX: " + southWest.boundary.center.getxCoord().add(southWest.boundary.halfDimension) );
-        QuadTreeApplication.logger.AddLog("South West MinY: " + southWest.boundary.center.getyCoord().subtract(southWest.boundary.halfDimension) );
-        QuadTreeApplication.logger.AddLog("South West MaxY: " + southWest.boundary.center.getyCoord().add(southWest.boundary.halfDimension) );
-        QuadTreeApplication.logger.AddLog("\n\n");
-        
-        QuadTreeApplication.logger.AddLog("\n\n");
-        QuadTreeApplication.logger.AddLog("South East Information");
-        QuadTreeApplication.logger.AddLog("South East Center: (" + southEast.boundary.center.getxCoord() + ", " + southEast.boundary.center.getyCoord() + ")");
-        QuadTreeApplication.logger.AddLog("South East Half Dimension: " + southEast.boundary.halfDimension);
-        QuadTreeApplication.logger.AddLog("South East MinX: " + southEast.boundary.center.getxCoord().subtract(southEast.boundary.halfDimension) );
-        QuadTreeApplication.logger.AddLog("South East MaxX: " + southEast.boundary.center.getxCoord().add(southEast.boundary.halfDimension) );
-        QuadTreeApplication.logger.AddLog("South East MinY: " + southEast.boundary.center.getyCoord().subtract(southEast.boundary.halfDimension) );
-        QuadTreeApplication.logger.AddLog("South East MaxY: " + southEast.boundary.center.getyCoord().add(southEast.boundary.halfDimension) );
-        QuadTreeApplication.logger.AddLog("\n\n");
-        
-        QuadTreeApplication.logger.AddLog("/*****************End Subdivided Trees****************/");
-        QuadTreeApplication.logger.AddLog("\n\n");
-    }
-    
     private QuadTree CreateNorthWestSubdividedQuadTree()
     {
         return CreateSubdividedQuadTree(CreateNorthWestSubdividedBoundingBox());
@@ -130,9 +87,9 @@ public class QuadTree
     
     private DataPoint CreateNorthWestSubdividedCenterPoint()
     {
-        BigDecimal northWestNewCenterX = (boundary.center.getxCoord().subtract(boundary.halfDimension.divide(new BigDecimal(2))));
-        BigDecimal northWestNewCenterY = (boundary.center.getyCoord().add(boundary.halfDimension.divide(new BigDecimal(2))));
-        return new DataPoint(northWestNewCenterX, northWestNewCenterY, new BigDecimal(0));
+        double northWestNewCenterX = (boundary.center.getxCoord() - (boundary.halfDimension.divide(new BigDecimal(2))).doubleValue());
+        double northWestNewCenterY = (boundary.center.getyCoord() + (boundary.halfDimension.divide(new BigDecimal(2))).doubleValue());
+        return new DataPoint(northWestNewCenterX, northWestNewCenterY, 0);
     }
     
     private QuadTree CreateNorthEastSubdividedQuadTree()
@@ -147,9 +104,9 @@ public class QuadTree
     
     private DataPoint CreateNorthEastSubdividedCenterPoint()
     {
-        BigDecimal northEastNewCenterX = (boundary.center.getxCoord().add(boundary.halfDimension.divide(new BigDecimal(2))));
-        BigDecimal northEastNewCenterY = (boundary.center.getyCoord().add(boundary.halfDimension.divide(new BigDecimal(2))));
-        return new DataPoint(northEastNewCenterX, northEastNewCenterY, new BigDecimal(0));
+        double northEastNewCenterX = (boundary.center.getxCoord() + (boundary.halfDimension.divide(new BigDecimal(2))).doubleValue());
+        double northEastNewCenterY = (boundary.center.getyCoord() + (boundary.halfDimension.divide(new BigDecimal(2))).doubleValue());
+        return new DataPoint(northEastNewCenterX, northEastNewCenterY, 0);
     }
     
     private QuadTree CreateSouthWestSubdividedQuadTree()
@@ -164,9 +121,9 @@ public class QuadTree
     
     private DataPoint CreateSouthWestSubdividedCenterPoint()
     {
-        BigDecimal southWestNewCenterX = (boundary.center.getxCoord().subtract(boundary.halfDimension.divide(new BigDecimal(2))));
-        BigDecimal southWestNewCenterY = (boundary.center.getyCoord().subtract(boundary.halfDimension.divide(new BigDecimal(2))));
-        return new DataPoint(southWestNewCenterX, southWestNewCenterY, new BigDecimal(0));
+        double southWestNewCenterX = (boundary.center.getxCoord() - (boundary.halfDimension.divide(new BigDecimal(2))).doubleValue());
+        double southWestNewCenterY = (boundary.center.getyCoord() - (boundary.halfDimension.divide(new BigDecimal(2))).doubleValue());
+        return new DataPoint(southWestNewCenterX, southWestNewCenterY, 0);
     }
     
     private QuadTree CreateSouthEastSubdividedQuadTree()
@@ -181,9 +138,9 @@ public class QuadTree
     
     private DataPoint CreateSouthEastSubdividedCenterPoint()
     {
-        BigDecimal southEastNewCenterX = boundary.center.getxCoord().add(boundary.halfDimension.divide(new BigDecimal(2)));
-        BigDecimal southEastNewCenterY = boundary.center.getyCoord().subtract(boundary.halfDimension.divide(new BigDecimal(2)));
-        return new DataPoint(southEastNewCenterX, southEastNewCenterY, new BigDecimal(0));
+        double southEastNewCenterX = boundary.center.getxCoord() + (boundary.halfDimension.divide(new BigDecimal(2))).doubleValue();
+        double southEastNewCenterY = boundary.center.getyCoord() - (boundary.halfDimension.divide(new BigDecimal(2))).doubleValue();
+        return new DataPoint(southEastNewCenterX, southEastNewCenterY, 0);
     }
     
     private QuadTree CreateSubdividedQuadTree(AxisAlignedBoundingBox boundary)
@@ -217,5 +174,102 @@ public class QuadTree
         pointsInRange.addAll(southEast.QueryRange(range));
 
         return pointsInRange;
+    }
+    
+    
+    private DataPoint GetMinValues(ArrayList<DataPoint> fileContents)
+    {
+        double X = 0;
+        double Y = 0;
+        for(int i = 0; i < fileContents.size(); i++)
+        {
+            X = fileContents.get(i).getxCoord() < X ? fileContents.get(i).getxCoord() : X;
+            Y = fileContents.get(i).getxCoord() < Y ? fileContents.get(i).getyCoord() : Y;
+        }
+        double smallestValue = X < Y ? X : Y;
+        return new DataPoint(smallestValue - 1, smallestValue - 1, 0);
+    }
+    
+    private DataPoint GetMaxValues(ArrayList<DataPoint> fileContents)
+    {
+        double X = 0;
+        double Y = 0;
+        for(int i = 0; i < fileContents.size(); i++)
+        {
+            X = fileContents.get(i).getxCoord() > X ? fileContents.get(i).getxCoord() : X;
+            Y = fileContents.get(i).getxCoord() > Y ? fileContents.get(i).getxCoord() : Y;
+        }
+        double biggestValue = X > Y ? X : Y;
+        return new DataPoint(biggestValue + 1, biggestValue + 1, 0);
+    }
+    
+    private DataPoint GetCenterValue(DataPoint minValues, DataPoint maxValues)
+    {
+        return new DataPoint(GetCenterXValue(minValues.getxCoord(), maxValues.getxCoord()), GetCenterYValue(minValues.getyCoord(), maxValues.getyCoord()), 0);
+    }
+    
+    private double GetCenterXValue(double minX, double maxX)
+    {
+        return (maxX + minX)/2;
+    }
+    
+    private double GetCenterYValue(double minY, double maxY)
+    {
+        return (maxY + minY)/2;
+    }
+    
+    private BigDecimal GetStartingHalfDimension(DataPoint minValues, DataPoint maxValues)
+    {
+        BigDecimal maxyCoord = new BigDecimal(maxValues.getyCoord());
+        BigDecimal minyCoord = new BigDecimal(minValues.getyCoord());
+        return maxyCoord.subtract(minyCoord).divide(new BigDecimal(2));
+    }
+    
+    private AxisAlignedBoundingBox CreateStartBoxFromFileContents(ArrayList<DataPoint> fileContents)
+    {
+        DataPoint minValues = GetMinValues(fileContents);
+        DataPoint maxValues = GetMaxValues(fileContents);
+        
+        DataPoint CenterValue = GetCenterValue(minValues, maxValues);
+        
+        BigDecimal startingHalfDimension = GetStartingHalfDimension(minValues, maxValues);
+        
+        return new AxisAlignedBoundingBox(new DataPoint(CenterValue.getxCoord(), CenterValue.getyCoord(), 0), startingHalfDimension);
+    }
+    private void CreateQuadTreeStructure(ArrayList<DataPoint> fileContents)
+    {
+        long startTime = System.nanoTime();
+        AxisAlignedBoundingBox startBox = CreateStartBoxFromFileContents(fileContents);
+        
+        int counter = 0;
+        for( int i = 0; i < fileContents.size(); i++ )
+        {
+            if(Insert(fileContents.get(i)))
+                counter++;
+            
+            if(counter % 100000 == 0)
+                System.out.println("Inserted " + counter + " values");
+        }
+        long endTime = System.nanoTime();
+        System.out.println("Creating QuadTree Structure Took " + ((endTime - startTime)/ 1000000000.0) + " seconds");
+        System.out.println("Nodes added: " + counter + "/" + fileContents.size());
+    }
+        
+    public ArrayList<DataPoint> QueryDataPointsInRange(UserInput inputs)
+    {
+        //long startTime = System.nanoTime();
+        
+        double inputCenterX = (inputs.getxLeft() + inputs.getxRight())/2;
+        double inputCenterY = (inputs.getyLower() + inputs.getyUpper())/2;
+        
+        BigDecimal xRight = new BigDecimal(inputs.getxRight());
+        BigDecimal xLeft = new BigDecimal(inputs.getxLeft());
+        BigDecimal halfDimension = xRight.subtract(xLeft).divide(new BigDecimal(2));
+        AxisAlignedBoundingBox queryBox = new AxisAlignedBoundingBox(new DataPoint(inputCenterX, inputCenterY, 0), halfDimension);
+        
+        //long endTime = System.nanoTime();
+        //System.out.println("Querying Coordinates In Range Took " + ((endTime - startTime)/ 1000000000.0) + " seconds");
+        
+        return QueryRange(queryBox);
     }
 }

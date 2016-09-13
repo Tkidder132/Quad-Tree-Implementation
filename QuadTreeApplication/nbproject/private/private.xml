@@ -3,11 +3,14 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/tkidder/Desktop/Java/QuadTreeApplication/src/quadtree/UserInput.java</file>
-            <file>file:/C:/Users/tkidder/Desktop/Java/QuadTreeApplication/src/quadtree/AxisAlignedBoundingBox.java</file>
-            <file>file:/C:/Users/tkidder/Desktop/Java/QuadTreeApplication/src/quadtree/CoordinatesFileReader.java</file>
-            <file>file:/C:/Users/tkidder/Desktop/Java/QuadTreeApplication/src/quadtree/BigDecimalUtility.java</file>
-            <file>file:/C:/Users/tkidder/Desktop/Java/QuadTreeApplication/src/quadtree/QuadTreeApplication.java</file>
+            <file>file:/C:/Users/tkidder/Desktop/Quad%20Tree%20Application/QuadTreeApplication/src/quadtree/QuadTree.java</file>
+            <file>file:/C:/Users/tkidder/Desktop/Quad%20Tree%20Application/QuadTreeApplication/src/quadtree/QuadTreeApplication.java</file>
+            <file>file:/C:/Users/tkidder/Desktop/Quad%20Tree%20Application/QuadTreeApplication/src/Utilities/FileManager.java</file>
+            <file>file:/C:/Users/tkidder/Desktop/Quad%20Tree%20Application/QuadTreeApplication/src/quadtree/AxisAlignedBoundingBox.java</file>
+            <file>file:/C:/Users/tkidder/Desktop/Quad%20Tree%20Application/QuadTreeApplication/src/quadtree/DataPoint.java</file>
+            <file>file:/C:/Users/tkidder/Desktop/Quad%20Tree%20Application/QuadTreeApplication/src/Utilities/ActionLogger.java</file>
+            <file>file:/C:/Users/tkidder/Desktop/Quad%20Tree%20Application/QuadTreeApplication/src/Utilities/BigDecimalUtility.java</file>
+            <file>file:/C:/Users/tkidder/Desktop/Quad%20Tree%20Application/QuadTreeApplication/src/quadtree/UserInput.java</file>
         </group>
     </open-files>
 </project-private>

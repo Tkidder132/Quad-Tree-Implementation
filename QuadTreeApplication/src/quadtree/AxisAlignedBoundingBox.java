@@ -24,41 +24,41 @@ public class AxisAlignedBoundingBox
     
     public boolean containsPoint(DataPoint point)
     {
-        BigDecimal xMin = this.center.getxCoord().subtract(this.halfDimension);
-        BigDecimal xMax = this.center.getxCoord().add(this.halfDimension);
-        BigDecimal yMin = this.center.getyCoord().subtract(this.halfDimension);
-        BigDecimal yMax = this.center.getyCoord().add(this.halfDimension);
+        double xMin = this.center.getxCoord() - this.halfDimension.doubleValue();
+        double xMax = this.center.getxCoord() + this.halfDimension.doubleValue();
+        double yMin = this.center.getyCoord() - this.halfDimension.doubleValue();
+        double yMax = this.center.getyCoord() + this.halfDimension.doubleValue();
         
-        return BigDecimalUtility.BigDecimalGreaterThanOrEqualTo(point.getxCoord(),xMin) &&
-               BigDecimalUtility.BigDecimalLessThanOrEqualTo(point.getxCoord(), xMax) &&
-               BigDecimalUtility.BigDecimalGreaterThanOrEqualTo(point.getyCoord(), yMin) &&
-               BigDecimalUtility.BigDecimalLessThanOrEqualTo(point.getyCoord(), yMax);
+        return (point.getxCoord() >= xMin) &&
+                (point.getxCoord() <= xMax) &&
+                (point.getyCoord() >= yMin) &&
+                (point.getyCoord() <= yMax);
     }
     
     public boolean intersectsAABB(AxisAlignedBoundingBox other)
     {
-        BigDecimal xMin = this.center.getxCoord().subtract(this.halfDimension);
-        BigDecimal xMax = this.center.getxCoord().add(this.halfDimension);
-        BigDecimal yMin = this.center.getyCoord().subtract(this.halfDimension);
-        BigDecimal yMax = this.center.getyCoord().add(this.halfDimension);
+        double xMin = this.center.getxCoord() - this.halfDimension.doubleValue();
+        double xMax = this.center.getxCoord() + this.halfDimension.doubleValue();
+        double yMin = this.center.getyCoord() - this.halfDimension.doubleValue();
+        double yMax = this.center.getyCoord() + this.halfDimension.doubleValue();
         
-        BigDecimal xMinOther = other.center.getxCoord().subtract(other.halfDimension);
-        BigDecimal xMaxOther = other.center.getxCoord().add(other.halfDimension);
-        BigDecimal yMinOther = other.center.getyCoord().subtract(other.halfDimension);
-        BigDecimal yMaxOther = other.center.getyCoord().add(other.halfDimension);
+        double xMinOther = other.center.getxCoord() - other.halfDimension.doubleValue();
+        double xMaxOther = other.center.getxCoord() + other.halfDimension.doubleValue();
+        double yMinOther = other.center.getyCoord() - other.halfDimension.doubleValue();
+        double yMaxOther = other.center.getyCoord() + other.halfDimension.doubleValue();
         
         
         //if (xMax < xMinOther) return false; // a is left of b
-        if(BigDecimalUtility.BigDecimalLessThan(xMax, xMinOther)) return false;
+        if(xMax < xMinOther) return false;
         
         //if (xMin > xMaxOther) return false; // a is right of b
-        if(BigDecimalUtility.BigDecimalGreaterThan(xMin, xMaxOther)) return false;
+        if(xMin > xMaxOther) return false;
         
         //if (yMax < yMinOther) return false; // a is above b
-        if(BigDecimalUtility.BigDecimalLessThan(yMax, yMinOther)) return false;
+        if(yMax < yMinOther) return false;
         
         //if (yMin > yMaxOther) return false; // a is below b
-        if(BigDecimalUtility.BigDecimalGreaterThan(yMin, yMaxOther)) return false;
+        if(yMin > yMaxOther) return false;
         
         return true; // boxes overlap
     }

@@ -3,17 +3,18 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package quadtree;
+package Utilities;
 
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
+import quadtree.DataPoint;
 
 /**
  *
@@ -21,18 +22,22 @@ import javax.swing.JFrame;
  */
 public class FileManager
 {
-    
+    private int timesSaved = 0;
     private enum fileOperation {OPEN, SAVE};
     public ArrayList<DataPoint> ReadFile()
     {
-        String filePath = GetFilePath(fileOperation.OPEN); 
+        String filePath;
+        do
+        {
+            JOptionPane.showMessageDialog(null, "Please choose an input file");
+            filePath = GetFilePath(fileOperation.OPEN);
+            System.out.println(filePath);
+        }while(filePath.equals(""));
         return ReadFile(filePath);
     }
     
     private ArrayList<DataPoint> ReadFile(String filePath)
-    {        
-        long startTime = System.nanoTime();
-        
+    {
         ArrayList<DataPoint> coordinates = new ArrayList<>();
         
         int counter = 0;
@@ -43,9 +48,9 @@ public class FileManager
             while (line != null)
             {
                 counter++;
-                BigDecimal xCoord = new BigDecimal(line.split(",")[0]);
-                BigDecimal yCoord = new BigDecimal(line.split(",")[1]);
-                BigDecimal Value = new BigDecimal(line.split(",")[2]);
+                double xCoord = Double.parseDouble(line.split(",")[0]);
+                double yCoord = Double.parseDouble(line.split(",")[1]);
+                double Value = Double.parseDouble(line.split(",")[2]);
                 coordinates.add(new DataPoint(xCoord, yCoord, Value));
                 line = br.readLine();
                 
@@ -58,35 +63,32 @@ public class FileManager
         {
             
         }
-        long endTime = System.nanoTime();
-        System.out.println("Read File Took " + ((endTime - startTime)/ 1000000000.0) + " seconds"); 
         return coordinates;
     }
     
     public void PrintToFile(ArrayList<DataPoint> coordinates)
     {
-        long startTime = System.nanoTime();
-        System.out.println(GetFilePath(fileOperation.SAVE) + "\\query_results.txt");
-        try(PrintWriter pr = new PrintWriter(GetFilePath(fileOperation.SAVE) + "\\query_results.txt"))
+        JOptionPane.showMessageDialog(null, "Please choose a location to save");
+        try(PrintWriter pr = new PrintWriter(GetFilePath(fileOperation.SAVE) + 
+                                            "\\query_results" + 
+                                            ((timesSaved == 0) ? "" : timesSaved).toString() + 
+                                            ".txt"))
         {
             coordinates.stream().forEach((coordinate) ->
             {
                 pr.println(coordinate.getxCoord() + "," + coordinate.getyCoord() + "," + coordinate.getValue());
             });
             pr.close();
+            timesSaved++;
         }
         catch (Exception e)
         {
             System.out.println("No such file exists.");
         }
-        
-        long endTime = System.nanoTime();
-        System.out.println("Print To File Took " + ((endTime - startTime)/ 1000000000.0) + " seconds");
     }
     
     private int LinesInFile(String filePath)
     {
-        long startTime = System.nanoTime();
         int linesInFile = 0;
         try(BufferedReader br = new BufferedReader(new FileReader(filePath))) 
         {
@@ -101,8 +103,6 @@ public class FileManager
         {
             
         }
-        long endTime = System.nanoTime();
-        System.out.println("Lines In File Took "+ ((endTime - startTime)/ 1000000000.0) + " seconds"); 
         return linesInFile;
     }
     

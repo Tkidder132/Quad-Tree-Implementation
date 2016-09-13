@@ -4,52 +4,49 @@
  * and open the template in the editor.
  */
 package quadtree;
-
-import java.math.BigDecimal;
-
 /**
  *
  * @author tkidder
  */
 public class DataPoint
 {
-    private BigDecimal xCoord, yCoord, Value;
+    private double xCoord, yCoord, Value;
     
     public DataPoint() { }
     
-    public DataPoint(BigDecimal _xCoord, BigDecimal _yCoord, BigDecimal _Value)
+    public DataPoint(double _xCoord, double _yCoord, double _Value)
     {
         this.xCoord = _xCoord;
         this.yCoord = _yCoord;
         this.Value = _Value;
     }
 
-    public BigDecimal getxCoord()
+    public double getxCoord()
     {
         return xCoord;
     }
 
-    public void setxCoord(BigDecimal xCoord)
+    public void setxCoord(double xCoord)
     {
         this.xCoord = xCoord;
     }
 
-    public BigDecimal getyCoord()
+    public double getyCoord()
     {
         return yCoord;
     }
 
-    public void setyCoord(BigDecimal yCoord)
+    public void setyCoord(double yCoord)
     {
         this.yCoord = yCoord;
     }
 
-    public BigDecimal getValue()
+    public double getValue()
     {
         return Value;
     }
 
-    public void setValue(BigDecimal Value)
+    public void setValue(double Value)
     {
         this.Value = Value;
     }
