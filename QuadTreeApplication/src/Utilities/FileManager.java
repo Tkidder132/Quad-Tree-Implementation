@@ -66,8 +66,8 @@ public class FileManager
     public void PrintToFile(ArrayList<DataPoint> coordinates)
     {
         long startTime = System.nanoTime();
-        System.out.println(GetFilePath(fileOperation.SAVE) + "\\XYCoordinates.txt");
-        try(PrintWriter pr = new PrintWriter(GetFilePath(fileOperation.SAVE) + "\\XYCoordinates.txt"))
+        System.out.println(GetFilePath(fileOperation.SAVE) + "\\query_results.txt");
+        try(PrintWriter pr = new PrintWriter(GetFilePath(fileOperation.SAVE) + "\\query_results.txt"))
         {
             coordinates.stream().forEach((coordinate) ->
             {
